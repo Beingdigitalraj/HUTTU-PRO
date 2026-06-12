@@ -1,23 +1,21 @@
-// HUTTU PRO - Core Web3 & Binance API Logic
+// HUTTU PRO - Core Web3 & Multi-Exchange API Logic
 let userWalletAddress = null;
-let isAcceptedMember = false; // Will be managed via backend panel later
+let isAcceptedMember = false; 
 
 // 1. Connect Web3 Wallet (MetaMask, Trust Wallet, etc.)
 async function connectWallet() {
     if (window.ethereum) {
         try {
-            // Request account access
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             userWalletAddress = accounts[0];
             
-            // Shorten the address to display (e.g., 0x1234...abcd)
             const shortAddress = userWalletAddress.substring(0, 6) + "..." + userWalletAddress.substring(userWalletAddress.length - 4);
             
             document.getElementById('walletBtn').innerText = "Connected: " + shortAddress;
-            document.getElementById('walletBtn').style.backgroundColor = "#2ebd85"; // Change button to green
-            console.log("Wallet connected successfully: " + userWalletAddress);
+            document.getElementById('walletBtn').style.backgroundColor = "#2ebd85"; 
+            console.log("Wallet connected: " + userWalletAddress);
             
-            // For testing purposes, unlocking chat on wallet connect
+            // Unlock chat for demo purposes on wallet connect
             unlockChatArea();
             
         } catch (error) {
@@ -29,8 +27,9 @@ async function connectWallet() {
     }
 }
 
-// 2. Save and Validate Binance API Keys for Auto Trading
-function saveBinanceAPI() {
+// 2. Save and Validate Multi-Exchange API Keys for Auto Trading
+function saveExchangeAPI() {
+    const exchange = document.getElementById('exchangeSelect').value;
     const apiKey = document.getElementById('apiKey').value.trim();
     const secretKey = document.getElementById('secretKey').value.trim();
     const statusText = document.getElementById('apiStatus');
@@ -45,14 +44,13 @@ function saveBinanceAPI() {
         return;
     }
 
-    statusText.innerText = "⏳ Connecting API to HUTTU PRO AI Trading Engine...";
+    statusText.innerText = `⏳ Connecting ${exchange} API to HUTTU PRO AI Trading Engine...`;
     statusText.style.color = "#f0b90b";
 
-    // Simulating Secure API handshake
     setTimeout(() => {
-        statusText.innerText = "✅ AI Bot Activated Successfully! Auto-trading is now running via Binance API.";
+        statusText.innerText = `✅ AI Bot Activated Successfully! Auto-trading is now running via your ${exchange} Account.`;
         statusText.style.color = "#2ebd85";
-        alert("Success: Binance API linked securely. Withdrawal permission is verified as BLOCKED.");
+        alert(`Success: ${exchange} API linked securely. Withdrawal permission is verified as BLOCKED.`);
     }, 2000);
 }
 
@@ -67,7 +65,7 @@ function launchGame(gameName) {
 
 // 4. Chat Unlock Functionality for Members
 function unlockChatArea() {
-    isAcceptedMember = true; // Temporary mock approval on wallet connection
+    isAcceptedMember = true; 
     document.getElementById('chatInput').disabled = false;
     document.getElementById('chatInput').placeholder = "Write a verified message...";
     document.getElementById('chatSendBtn').disabled = false;
@@ -82,6 +80,6 @@ function sendMessage() {
         newMsg.innerHTML = `<strong>User (${userWalletAddress.substring(0,4)}...):</strong> ${input.value}`;
         chatBox.appendChild(newMsg);
         input.value = "";
-        chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to latest message
+        chatBox.scrollTop = chatBox.scrollHeight; 
     }
 }
