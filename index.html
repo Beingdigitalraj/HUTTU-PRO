@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HUTTU PRO - AI Crypto Bot, Staking & Web3 Gaming Ecosystem</title>
-    <meta name="description" content="HUTTU PRO is the ultimate Web3 ecosystem featuring an AI DCA Binance bot, high-yield staking pools, and premium crypto gaming. Earn lifetime rewards.">
-    <meta name="keywords" content="Huttu Pro, Crypto Staking, Web3 Gaming, Binance Trading Bot, AI DCA, Lifetime Commission">
+    <title>HUTTU PRO - AI Multi-Exchange Bot, Staking & Web3 Gaming</title>
+    <meta name="description" content="HUTTU PRO is the ultimate Web3 ecosystem featuring an AI DCA multi-exchange trading bot, high-yield staking pools, and premium crypto gaming.">
+    <meta name="keywords" content="Huttu Pro, Crypto Staking, Web3 Gaming, Binance Trading Bot, Bybit API Bot, AI DCA, Lifetime Commission">
     <meta name="robots" content="index, follow">
     
     <style>
@@ -13,7 +13,7 @@
             --bg-color: #0b0e11;
             --card-color: #181a20;
             --text-color: #eaecef;
-            --primary-color: #f0b90b; /* Binance Yellow */
+            --primary-color: #f0b90b; /* Binance/Crypto Yellow */
             --success-color: #2ebd85;
             --secondary-color: #9b51e0; /* Gaming Purple */
             --border-color: #2b2f36;
@@ -97,7 +97,7 @@
             font-weight: bold;
         }
 
-        /* Binance API Panel Styling */
+        /* Multi-Exchange API Panel Styling */
         .api-panel {
             background-color: var(--card-color);
             border: 1px solid var(--primary-color);
@@ -113,7 +113,7 @@
             margin-bottom: 8px;
             color: #848e9c;
         }
-        .form-group input {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 12px;
             background-color: #121418;
@@ -122,7 +122,7 @@
             color: white;
             box-sizing: border-box;
         }
-        .form-group input:focus {
+        .form-group input:focus, .form-group select:focus {
             border-color: var(--primary-color);
             outline: none;
         }
@@ -165,21 +165,31 @@
         
         <div style="text-align: center; margin: 40px 0;">
             <h1>The Ultimate Web3 AI & Crypto Ecosystem</h1>
-            <p style="color: #848e9c;">Trading Bot | High-Yield Staking | Play-to-Earn Gaming | Lifetime Commissions</p>
+            <p style="color: #848e9c;">Multi-Exchange AI Bot | High-Yield Staking | Play-to-Earn Gaming | Lifetime Commissions</p>
         </div>
 
-        <h2 class="section-title">🔑 Binance Auto-Trading Setup</h2>
+        <h2 class="section-title">🔑 Multi-Exchange Auto-Trading Setup</h2>
         <div class="api-panel">
-            <p style="color: var(--success-color); margin-top: 0;">🛡️ <strong>Security Note:</strong> Enable ONLY "Enable Reading" and "Enable Spot & Margin Trading" in Binance. DO NOT enable withdrawals.</p>
+            <p style="color: var(--success-color); margin-top: 0;">🛡️ <strong>Security Note:</strong> Enable ONLY "Enable Reading" and "Enable Spot & Margin Trading". DO NOT enable withdrawals on any exchange.</p>
+            
             <div class="form-group">
-                <label>Binance API Key</label>
-                <input type="text" id="apiKey" placeholder="Enter your Binance API Key...">
+                <label>Select Crypto Exchange</label>
+                <select id="exchangeSelect">
+                    <option value="Binance">Binance (Recommended)</option>
+                    <option value="Bybit">Bybit</option>
+                    <option value="OKX">OKX</option>
+                    <option value="KuCoin">KuCoin</option>
+                </select>
             </div>
             <div class="form-group">
-                <label>Binance Secret Key</label>
-                <input type="password" id="secretKey" placeholder="Enter your Binance Secret Key...">
+                <label>Exchange API Key</label>
+                <input type="text" id="apiKey" placeholder="Enter your Exchange API Key...">
             </div>
-            <button class="btn-connect" style="width: 100%; padding: 15px;" onclick="saveBinanceAPI()">Activate Auto AI Trading</button>
+            <div class="form-group">
+                <label>Exchange Secret Key</label>
+                <input type="password" id="secretKey" placeholder="Enter your Exchange Secret Key...">
+            </div>
+            <button class="btn-connect" style="width: 100%; padding: 15px;" onclick="saveExchangeAPI()">Activate Auto AI Trading</button>
             <p id="apiStatus" style="text-align: center; margin-top: 15px; color: #848e9c; font-weight: bold;"></p>
         </div>
 
