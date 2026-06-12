@@ -83,19 +83,9 @@
             font-weight: bold;
             margin: 10px 0;
         }
-        /* Staking Specific */
-        .staking-card {
-            border-left: 4px solid var(--success-color);
-        }
-        .apr {
-            font-size: 24px;
-            color: var(--success-color);
-            font-weight: bold;
-        }
-        /* Gaming Specific */
-        .gaming-card {
-            border-left: 4px solid var(--secondary-color);
-        }
+        .staking-card { border-left: 4px solid var(--success-color); }
+        .gaming-card { border-left: 4px solid var(--secondary-color); }
+        
         .btn-game {
             background-color: var(--secondary-color);
             color: white;
@@ -106,7 +96,37 @@
             margin-top: 10px;
             font-weight: bold;
         }
-        /* MLM Table */
+
+        /* Binance API Panel Styling */
+        .api-panel {
+            background-color: var(--card-color);
+            border: 1px solid var(--primary-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #848e9c;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background-color: #121418;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: white;
+            box-sizing: border-box;
+        }
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -115,16 +135,9 @@
             border-radius: 10px;
             overflow: hidden;
         }
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-        th {
-            background-color: var(--border-color);
-            color: var(--primary-color);
-        }
-        /* Chat Box System */
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background-color: var(--border-color); color: var(--primary-color); }
+
         .chat-container {
             background-color: var(--card-color);
             border: 1px solid var(--border-color);
@@ -132,51 +145,20 @@
             margin-top: 40px;
             overflow: hidden;
         }
-        .chat-header {
-            background-color: var(--border-color);
-            padding: 15px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-        }
-        .chat-messages {
-            height: 200px;
-            padding: 15px;
-            overflow-y: auto;
-            background-color: #121418;
-        }
-        .chat-input-area {
-            display: flex;
-            border-top: 1px solid var(--border-color);
-        }
-        .chat-input-area input {
-            flex: 1;
-            background: none;
-            border: none;
-            padding: 15px;
-            color: white;
-            outline: none;
-        }
-        .chat-input-area button {
-            background-color: var(--primary-color);
-            border: none;
-            padding: 0 25px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .system-msg {
-            color: #848e9c;
-            font-size: 14px;
-            font-style: italic;
-            text-align: center;
-        }
+        .chat-header { background-color: var(--border-color); padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
+        .chat-messages { height: 200px; padding: 15px; overflow-y: auto; background-color: #121418; }
+        .chat-input-area { display: flex; border-top: 1px solid var(--border-color); }
+        .chat-input-area input { flex: 1; background: none; border: none; padding: 15px; color: white; outline: none; }
+        .chat-input-area button { background-color: var(--primary-color); border: none; padding: 0 25px; font-weight: bold; cursor: pointer; }
+        .system-msg { color: #848e9c; font-size: 14px; font-style: italic; text-align: center; }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.1/web3.min.js"></script>
 </head>
 <body>
 
     <header>
         <div class="logo">HUTTU PRO</div>
-        <button class="btn-connect" onclick="connectWallet()">Connect Wallet</button>
+        <button class="btn-connect" id="walletBtn" onclick="connectWallet()">Connect Wallet</button>
     </header>
 
     <div class="container">
@@ -184,6 +166,21 @@
         <div style="text-align: center; margin: 40px 0;">
             <h1>The Ultimate Web3 AI & Crypto Ecosystem</h1>
             <p style="color: #848e9c;">Trading Bot | High-Yield Staking | Play-to-Earn Gaming | Lifetime Commissions</p>
+        </div>
+
+        <h2 class="section-title">🔑 Binance Auto-Trading Setup</h2>
+        <div class="api-panel">
+            <p style="color: var(--success-color); margin-top: 0;">🛡️ <strong>Security Note:</strong> Enable ONLY "Enable Reading" and "Enable Spot & Margin Trading" in Binance. DO NOT enable withdrawals.</p>
+            <div class="form-group">
+                <label>Binance API Key</label>
+                <input type="text" id="apiKey" placeholder="Enter your Binance API Key...">
+            </div>
+            <div class="form-group">
+                <label>Binance Secret Key</label>
+                <input type="password" id="secretKey" placeholder="Enter your Binance Secret Key...">
+            </div>
+            <button class="btn-connect" style="width: 100%; padding: 15px;" onclick="saveBinanceAPI()">Activate Auto AI Trading</button>
+            <p id="apiStatus" style="text-align: center; margin-top: 15px; color: #848e9c; font-weight: bold;"></p>
         </div>
 
         <h2 class="section-title">🤖 AI Trading Bot Packages</h2>
@@ -220,19 +217,19 @@
                 <h3>Flexible Pool</h3>
                 <div class="apr">12% APR</div>
                 <p>Lock Duration: No Lock</p>
-                <button class="btn-connect" style="width: 100%; margin-top: 10px;">Stake Now</button>
+                <button class="btn-connect" style="width: 100%; margin-top: 10px;">Make Deposit</button>
             </div>
             <div class="card staking-card">
                 <h3>Standard Pool</h3>
                 <div class="apr">24% APR</div>
                 <p>Lock Duration: 30 Days</p>
-                <button class="btn-connect" style="width: 100%; margin-top: 10px;">Stake Now</button>
+                <button class="btn-connect" style="width: 100%; margin-top: 10px;">Make Deposit</button>
             </div>
             <div class="card staking-card">
                 <h3>Max Booster Pool</h3>
                 <div class="apr">48% APR</div>
                 <p>Lock Duration: 90 Days</p>
-                <button class="btn-connect" style="width: 100%; margin-top: 10px;">Stake Now</button>
+                <button class="btn-connect" style="width: 100%; margin-top: 10px;">Make Deposit</button>
             </div>
         </div>
 
@@ -287,29 +284,12 @@
             </div>
             <div class="chat-input-area">
                 <input type="text" id="chatInput" placeholder="Verify package to type a message..." disabled>
-                <button onclick="sendMessage()" disabled>Send</button>
+                <button id="chatSendBtn" onclick="sendMessage()" disabled>Send</button>
             </div>
         </div>
 
     </div>
 
-    <script>
-        let isAcceptedMember = false; 
-
-        function connectWallet() {
-            alert("Connecting to Web3 Wallet Address via WalletConnect...");
-        }
-
-        function launchGame(gameName) {
-            alert("Launching " + gameName + "... Connect your Web3 Wallet to pay entry fee.");
-        }
-
-        function sendMessage() {
-            if(!isAcceptedMember) {
-                alert("Access Denied: Please activate a package to chat.");
-                return;
-            }
-        }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
