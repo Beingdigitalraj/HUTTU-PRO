@@ -48,7 +48,7 @@ function copyReferralLink() {
     copyText.select();
     copyText.setSelectionRange(0, 99999); 
     navigator.clipboard.writeText(copyText.value);
-    alert("🚀 Promotion Link Coped Successfully! Share it to start earning lifelong commission structure.");
+    alert("🚀 Promotion Link Copied Successfully! Share it to start earning lifelong commission structure.");
 }
 
 // 3. Multi-Exchange Secure API Handling
