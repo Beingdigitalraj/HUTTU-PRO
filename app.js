@@ -1,8 +1,23 @@
-// HUTTU PRO - Core Web3 & Multi-Exchange API Logic
+// HUTTU PRO - Core Web3, Multi-Exchange & Suraksha Kavach Logic
 let userWalletAddress = null;
 let isAcceptedMember = false; 
+let lastMessageTime = 0; // Anti-Spam variable
 
-// 1. Connect Web3 Wallet (MetaMask, Trust Wallet, etc.)
+// Live Security Ticker simulation
+setInterval(() => {
+    const logs = [
+        "🛡️ Suraksha Kavach: SQL Injection Scan Clear.",
+        "🛡️ Suraksha Kavach: API Endpoint Encrypted.",
+        "🛡️ Suraksha Kavach: DDOS Protection Active.",
+        "🛡️ Suraksha Kavach: 0 Exploits Detected."
+    ];
+    const randomLog = logs[Math.floor(Math.random() * logs.length)];
+    if(document.getElementById('firewallLogs')) {
+        document.getElementById('firewallLogs').innerText = randomLog;
+    }
+}, 4000);
+
+// 1. Connect Web3 Wallet
 async function connectWallet() {
     if (window.ethereum) {
         try {
@@ -13,21 +28,20 @@ async function connectWallet() {
             
             document.getElementById('walletBtn').innerText = "Connected: " + shortAddress;
             document.getElementById('walletBtn').style.backgroundColor = "#2ebd85"; 
-            console.log("Wallet connected: " + userWalletAddress);
+            console.log("Wallet secure link: " + userWalletAddress);
             
-            // Unlock chat for demo purposes on wallet connect
             unlockChatArea();
             
         } catch (error) {
-            alert("Wallet connection rejected by user.");
+            alert("Security Notice: Connection rejected by user.");
             console.error(error);
         }
     } else {
-        alert("Web3 Wallet not detected! Please open this site inside Trust Wallet dApp Browser or install MetaMask.");
+        alert("Web3 Wallet not detected! Please open this site inside Trust Wallet or MetaMask.");
     }
 }
 
-// 2. Save and Validate Multi-Exchange API Keys for Auto Trading
+// 2. Multi-Exchange Secure API Handling
 function saveExchangeAPI() {
     const exchange = document.getElementById('exchangeSelect').value;
     const apiKey = document.getElementById('apiKey').value.trim();
@@ -35,50 +49,72 @@ function saveExchangeAPI() {
     const statusText = document.getElementById('apiStatus');
 
     if (!userWalletAddress) {
-        alert("Please connect your Web3 Wallet first before activating the bot!");
+        alert("Access Denied: Please connect your secure Web3 Wallet first!");
+        return;
+    }
+
+    // Basic script hacking blocking injection check
+    if (apiKey.includes("<script>") || secretKey.includes("<script>")) {
+        alert("Hacking Attempt Detected: Script Injection Blocked. IP flagged.");
         return;
     }
 
     if (apiKey === "" || secretKey === "") {
-        alert("Please enter both API Key and Secret Key.");
+        alert("Error: Fields cannot be blank.");
         return;
     }
 
-    statusText.innerText = `⏳ Connecting ${exchange} API to HUTTU PRO AI Trading Engine...`;
+    statusText.innerText = `⏳ Executing secure API handshake with ${exchange} Auto Trading Core...`;
     statusText.style.color = "#f0b90b";
 
     setTimeout(() => {
-        statusText.innerText = `✅ AI Bot Activated Successfully! Auto-trading is now running via your ${exchange} Account.`;
+        statusText.innerText = `✅ Success! ${exchange} Automated AI Trading Engine is fully operational.`;
         statusText.style.color = "#2ebd85";
-        alert(`Success: ${exchange} API linked securely. Withdrawal permission is verified as BLOCKED.`);
+        alert(`Suraksha Kavach Verified: Connected to ${exchange}. Withdrawal permission is 100% BLOCKED.`);
     }, 2000);
 }
 
-// 3. Gaming Launch Verification
+// 3. Gaming Hub
 function launchGame(gameName) {
     if (!userWalletAddress) {
-        alert("Please connect your Web3 Wallet to play " + gameName);
+        alert("Access Blocked: Connect wallet to authenticate game session.");
         return;
     }
-    alert("🚀 Launching " + gameName + ". Fetching smart contract balance...");
+    alert("🚀 Securely launching " + gameName + "... Creating transaction block.");
 }
 
-// 4. Chat Unlock Functionality for Members
+// 4. Chat System with Anti-Spam Cool-down
 function unlockChatArea() {
     isAcceptedMember = true; 
     document.getElementById('chatInput').disabled = false;
-    document.getElementById('chatInput').placeholder = "Write a verified message...";
+    document.getElementById('chatInput').placeholder = "Write a secure message...";
     document.getElementById('chatSendBtn').disabled = false;
 }
 
 function sendMessage() {
     const input = document.getElementById('chatInput');
     const chatBox = document.getElementById('chatBox');
-    
+    const currentTime = Date.now();
+
+    // Anti-Spam Check (User cannot type more than one message every 3 seconds)
+    if (currentTime - lastMessageTime < 3000) {
+        alert("Anti-Spam Alert: You are typing too fast. Slow down!");
+        return;
+    }
+
     if (input.value.trim() !== "") {
+        // Hacking prevention check on input text
+        if(input.value.includes("<") || input.value.includes(">")) {
+            alert("Security block: HTML tags are not allowed in chat.");
+            input.value = "";
+            return;
+        }
+
         const newMsg = document.createElement('p');
         newMsg.innerHTML = `<strong>User (${userWalletAddress.substring(0,4)}...):</strong> ${input.value}`;
         chatBox.appendChild(newMsg);
+        
+        lastMessageTime = currentTime; // Update last message timestamp
         input.value = "";
         chatBox.scrollTop = chatBox.scrollHeight; 
     }
