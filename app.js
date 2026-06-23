@@ -87,6 +87,8 @@ async function saveExchangeAPI() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ apiKey, secretKey, action: "BOT_START", amount: "0.01" })
+<script src="app.js"></script>
+
         });
         
         const result = await response.json();
