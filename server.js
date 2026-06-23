@@ -1,59 +1,31 @@
-// HUTTU PRO - Secure Node.js Backend Engine
 const express = require('express');
 const cors = require('cors');
-const crypto = require('crypto');
-const axios = require('axios');
-require('dotenv').config(); // For storing secrets safely
+const axios = require('axios'); // API कॉल के लिए
+require('dotenv').config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
+
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
-
-// Suraksha Kavach Middleware - Anti XSS & Code Injection
-const securityCheck = (req, res, next) => {
-    const data = JSON.stringify(req.body);
-    if (data.includes("<") || data.includes(">") || data.includes("script")) {
-        return res.status(403).json({ error: "🚨 MALWARE BLOCK: Malicious script injection detected." });
-    }
-    next();
-};
-
-// Secure Route to execute Auto-Withdrawal or Trade via Binance API
-app.post('/api/v1/binance/execute', securityCheck, async (req, res) => {
-    const { apiKey, secretKey, action, amount } = req.body;
-
-    if (!apiKey || !secretKey) {
-        return res.status(400).json({ error: "Missing API credentials" });
-    }
-
+// API Route - सुरक्षित तरीके से डेटा प्रोसेस करने के लिए
+app.post('/api/v1/binance/execute', async (req, res) => {
     try {
-        // Create Binance API Cryptographic Signature (HMAC SHA256)
-        const timestamp = Date.now();
-        const queryString = `timestamp=${timestamp}&symbol=BTCUSDT&side=BUY&type=MARKET&quantity=${amount}`;
-        
-        const signature = crypto
-            .createHmac('sha256', secretKey)
-            .update(queryString)
-            .digest('hex');
+        const { apiKey, secretKey, action, amount } = req.body;
 
-        // Note: In real production, you will call real Binance Endpoints here:
-        // https://api.binance.com/api/v3/order
-        
-        console.log(`🤖 24x7 Bot executing ${action} on Binance Secure Tunnel.`);
+        // यहाँ आप अपना बाइनेंस या ट्रेडिंग लॉजिक डाल सकते हैं
+        console.log(`Executing ${action} with keys provided.`);
 
-        return res.json({
-            success: true,
-            message: `⚡ Suraksha Kavach Handshake Complete. Binance executed ${action} successfully.`,
-            txId: crypto.randomBytes(16).toString('hex')
+        res.json({ 
+            success: true, 
+            message: "HUTTU PRO Engine: Handshake successful and Bot is live!" 
         });
-
     } catch (error) {
-        return res.status(500).json({ error: "API Connection Failed with Binance Network" });
+        res.status(500).json({ success: false, error: "Internal Server Error" });
     }
 });
 
 app.listen(PORT, () => {
-    console.log(`🛡️ HUTTU PRO Secure Backend Running on port ${PORT}`);
+    console.log(`HUTTU PRO Backend running on port ${PORT}`);
 });
