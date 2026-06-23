@@ -2,32 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>HUTTU PRO - 99% HIGH PROBABILITY SIGNAL</title>
+    <title>HUTTU PRO - LIVE SIGNAL</title>
     <style>
-        body { background-color: #000; color: #fff; font-family: sans-serif; text-align: center; }
-        .win-badge { color: #d4af37; font-size: 24px; font-weight: bold; border: 2px solid #d4af37; padding: 10px; display: inline-block; margin: 10px; }
-        .btn-connect { background-color: #d4af37; color: #000; padding: 15px; border: none; width: 80%; font-weight: bold; cursor: pointer; border-radius: 5px; }
+        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 0; }
+        /* Chart sabse upar */
+        .chart-container { width: 100%; height: 500px; }
+        .controls { padding: 10px; text-align: center; }
+        .win-badge { color: #d4af37; font-weight: bold; padding: 10px; }
+        .btn-connect { background-color: #d4af37; padding: 15px; width: 90%; border: none; font-weight: bold; }
     </style>
 </head>
 <body>
-    <h1>HUTTU PRO SIGNAL ENGINE</h1>
-    <div class="win-badge">🔥 99% ACCURACY SIGNAL MODE: ACTIVE</div>
-    
-    <button class="btn-connect" onclick="connectWallet()">CONNECT WALLET FOR EXECUTION</button>
-    
-    <div style="width: 100%; height: 600px; margin-top: 20px;">
-        <!-- Pro Scalping Chart -->
-        <iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark&style=1&interval=1&hideideas=1&studies=%5B%5D&showpopupbutton=1" style="width: 100%; height: 100%; border: none;"></iframe>
+    <!-- Trading Chart Sabse Upar -->
+    <div class="chart-container">
+        <iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark&style=1&interval=1" style="width: 100%; height: 100%; border: none;"></iframe>
+    </div>
+
+    <!-- Controls Niche -->
+    <div class="controls">
+        <div class="win-badge">🔥 99% ACCURACY SIGNAL MODE: ACTIVE</div>
+        <button class="btn-connect" onclick="connectWallet()">CONNECT WALLET</button>
+        <p id="wallet-display">Status: Not Connected</p>
     </div>
 
     <script>
         async function connectWallet() {
             if (window.ethereum) {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                alert("Wallet Linked to Signal Engine: " + accounts[0]);
-            } else {
-                alert("Web3 Browser Required!");
-            }
+                document.getElementById('wallet-display').innerText = "Connected: " + accounts[0];
+            } else { alert("Web3 Browser Required!"); }
         }
     </script>
 </body>
