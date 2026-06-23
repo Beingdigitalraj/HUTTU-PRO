@@ -9,7 +9,17 @@ async function connectWallet() {
         try {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             userWalletAddress = accounts[0];
-            
+                    // एड्रेस को वेबसाइट पर दिखाने के लिए (HTML में एक ID "wallet-display" जोड़ें)
+        document.getElementById("wallet-display").innerText = "Connected: " + userWalletAddress.substring(0, 6) + "...";
+        console.log("Wallet Connected:", userWalletAddress);
+    } catch (error) {
+        console.error("Connection failed:", error);
+        alert("Wallet connection failed!");
+    }
+} else {
+    alert("Please install MetaMask!");
+}
+
             const shortAddress = userWalletAddress.substring(0, 6) + "..." + userWalletAddress.substring(userWalletAddress.length - 4);
             document.getElementById('walletBtn').innerText = "Secured: " + shortAddress;
             document.getElementById('walletBtn').style.backgroundColor = "#2ebd85"; 
