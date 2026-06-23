@@ -1,11 +1,22 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-contract HuttuProMLM {
+// Reentrancy से बचने के लिए
+abstract contract ReentrancyGuard {
+    uint256 private constant _NOT_ENTERED = 1;
+    uint256 private constant _ENTERED = 2;
+    uint256 private _status = _NOT_ENTERED;
+    modifier nonReentrant() {
+        require(_status != _ENTERED, "ReentrancyGuard: reentrant call");
+        _status = _ENTERED;
+        _;
+        _status = _NOT_ENTERED;
+    }
+}
+
+contract HuttuProMLM is ReentrancyGuard {
     address public owner;
     uint256 public totalUsers;
-    
-    // 7-Level Commission Percentages (e.g., 10% = 1000 for basis points)
     uint256[7] public levelPercentages = [1000, 500, 300, 200, 100, 50, 50]; 
 
     struct User {
@@ -17,54 +28,38 @@ contract HuttuProMLM {
 
     mapping(address => User) public users;
 
-    event Registered(address indexed user, address indexed referrer);
-    event DepositMade(address indexed user, uint256 amount);
-    event CommissionPaid(address indexed referrer, address indexed referral, uint256 amount, uint256 level);
-
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Not the admin");
-        _;
-    }
-
     constructor() {
         owner = msg.sender;
         users[msg.sender].isRegistered = true;
         totalUsers = 1;
     }
 
-    // Register and Deposit into Trading/Staking Pool
-    function invest(address _referrer) external payable {
-        require(msg.value > 0, "Investment must be greater than 0");
+    // .call का उपयोग सुरक्षित है (transfer से बेहतर)
+    function invest(address _referrer) external payable nonReentrant {
+        require(msg.value > 0, "Investment must be > 0");
         
         if (!users[msg.sender].isRegistered) {
             require(users[_referrer].isRegistered, "Referrer must be registered");
             users[msg.sender].isRegistered = true;
             users[msg.sender].referrer = _referrer;
             totalUsers++;
-            emit Registered(msg.sender, _referrer);
         }
 
         users[msg.sender].totalStaked += msg.value;
-        emit DepositMade(msg.sender, msg.value);
 
-        // Distribute 7-Level MLM Commission Automatically on-chain
         address currentReferrer = users[msg.sender].referrer;
         for (uint256 i = 0; i < 7; i++) {
+            uint256 commission = (msg.value * levelPercentages[i]) / 10000;
+            
             if (currentReferrer == address(0)) {
-                // If no referrer, commission goes to admin/owner vault safely
-                payable(owner).transfer((msg.value * levelPercentages[i]) / 10000);
+                (bool sent, ) = payable(owner).call{value: commission}("");
+                require(sent, "Failed to send to owner");
             } else {
-                uint256 commission = (msg.value * levelPercentages[i]) / 10000;
                 users[currentReferrer].totalEarnings += commission;
-                payable(currentReferrer).transfer(commission); // Direct instant on-chain withdrawal
-                emit CommissionPaid(currentReferrer, msg.sender, commission, i + 1);
+                (bool sent, ) = payable(currentReferrer).call{value: commission}("");
+                require(sent, "Failed to send commission");
                 currentReferrer = users[currentReferrer].referrer;
             }
         }
-    }
-
-    // Owner can safely withdraw contract balance if any leftover
-    function withdrawAdminFees() external onlyOwner {
-        payable(owner).transfer(address(this).balance);
     }
 }
