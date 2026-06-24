@@ -1,38 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>HUTTU PRO</title>
-<style>
-  body
-<script src="bot.js"></script>
-<div class="login-panel">
-  <input type="text" id="apiKey" placeholder="Enter API Key">
-  <input type="password" id="apiSecret" placeholder="Enter API Secret">
-  <button onclick="startBot()">LOGIN & START BOT</button>
-</div>
-
- { background:#000; color:#fff; text-align:center; margin:0; padding:0; }
-  .chart-box { height:500px; width:100%; }
-</style>
+    <title>HUTTU PRO</title>
+    <style>
+        body { background: #000; color: #fff; text-align: center; margin: 0; padding: 20px; font-family: sans-serif; }
+        .chart-box { height: 300px; width: 100%; margin-bottom: 20px; }
+        .login-panel { background: #181a20; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        input { width: 80%; padding: 10px; margin: 5px; border-radius: 5px; border: none; }
+        button { padding: 10px 20px; cursor: pointer; background: #f0b90b; border: none; font-weight: bold; border-radius: 5px; }
+    </style>
 </head>
 <body>
-<div class="chart-box" style="height:300px; width:100%; margin-bottom:20px;">
-  <iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark&style=1&interval=1" style="width:100%; height:100%; border:none;"></iframe>
-</div>
 
-<!-- CHART SABSE UPAR -->
-<div class="chart-box">
-  <iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark&style=1&interval=1" style="width:100%; height:100%; border:none;"></iframe>
-</div>
+    <h1>HUTTU PRO</h1>
 
-<!-- BAAKI CHEEZEIN NICHE -->
-<h1>HUTTU PRO</h1>
-<button onclick="alert('Wallet Connected')">CONNECT WALLET</button>
+    <!-- Chart Section -->
+    <div class="chart-box">
+        <iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark&style=1&interval=1" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
 
+    <!-- Login Panel -->
+    <div class="login-panel">
+        <h3>Bot Login</h3>
+        <input type="text" id="apiKey" placeholder="Enter API Key">
+        <input type="password" id="apiSecret" placeholder="Enter API Secret">
+        <br><br>
+        <button onclick="startBot()">LOGIN & START BOT</button>
+    </div>
+
+    <button onclick="alert('Wallet Connected')">CONNECT WALLET</button>
+
+    <script src="bot.js"></script>
 </body>
-<div class="chart-box" style="height:300px; width:100%; margin-bottom:20px;">
-  <iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark&style=1&interval=1" style="width:100%; height:100%; border:none;"></iframe>
-</div>
-
 </html>
-
