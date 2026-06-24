@@ -1,19 +1,19 @@
 const express = require('express');
 const cors = require('cors');
-const helmet = require('helmet'); // सुरक्षा के लिए अतिरिक्त लेयर
+const helmet = require('helmet');
 require('dotenv').config();
 
 const app = express();
 
-// Google Cloud Run पोर्ट को डायनामिक तरीके से लेता है, इसलिए यहाँ बदलाव किया गया है
+// Cloud Run ke liye port configuration
 const PORT = process.env.PORT || 8080;
 
-// सुरक्षा के लिए Helmet का उपयोग करें
+// Security Middleware
 app.use(helmet()); 
 app.use(cors());
 app.use(express.json());
 
-// रूट: अब यह सुरक्षित है
+// Routes
 app.post('/api/v1/status', (req, res) => {
     res.json({ 
         success: true, 
@@ -21,17 +21,18 @@ app.post('/api/v1/status', (req, res) => {
     });
 });
 
-// बेसिक स्वास्थ्य जांच (Health Check) रूट - Cloud Run को इसकी जरूरत होती है
+// Health Check Route (Root)
 app.get('/', (req, res) => {
-    res.send("HUTTU PRO Engine is online!");
+    res.status(200).send("HUTTU PRO Engine is online and running smoothly!");
 });
 
-// एरर हैंडलिंग
+// Error Handling
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ success: false, message: "Something went wrong!" });
+    res.status(500).json({ success: false, message: "Something went wrong on the server!" });
 });
 
-app.listen(PORT, () => {
-    console.log(`✅ Server running on port ${PORT}`);
+// Server Start (0.0.0.0 zaroori hai Cloud Run ke liye)
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`✅ HUTTU PRO Server running on port ${PORT}`);
 });
