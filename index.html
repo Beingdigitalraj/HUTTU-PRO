@@ -1,37 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>HUTTU PRO - LIVE SIGNAL</title>
-    <style>
-        body { background-color: #000; color: #fff; font-family: sans-serif; margin: 0; padding: 0; }
-        /* Chart sabse upar */
-        .chart-container { width: 100%; height: 500px; }
-        .controls { padding: 10px; text-align: center; }
-        .win-badge { color: #d4af37; font-weight: bold; padding: 10px; }
-        .btn-connect { background-color: #d4af37; padding: 15px; width: 90%; border: none; font-weight: bold; }
-    </style>
+<title>HUTTU PRO</title>
+<style>
+  body { background:#000; color:#fff; text-align:center; margin:0; padding:0; }
+  .chart-box { height:500px; width:100%; }
+</style>
 </head>
 <body>
-    <!-- Trading Chart Sabse Upar -->
-    <div class="chart-container">
-        <iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark&style=1&interval=1" style="width: 100%; height: 100%; border: none;"></iframe>
-    </div>
 
-    <!-- Controls Niche -->
-    <div class="controls">
-        <div class="win-badge">🔥 99% ACCURACY SIGNAL MODE: ACTIVE</div>
-        <button class="btn-connect" onclick="connectWallet()">CONNECT WALLET</button>
-        <p id="wallet-display">Status: Not Connected</p>
-    </div>
+<!-- CHART SABSE UPAR -->
+<div class="chart-box">
+  <iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark&style=1&interval=1" style="width:100%; height:100%; border:none;"></iframe>
+</div>
 
-    <script>
-        async function connectWallet() {
-            if (window.ethereum) {
-                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                document.getElementById('wallet-display').innerText = "Connected: " + accounts[0];
-            } else { alert("Web3 Browser Required!"); }
-        }
-    </script>
+<!-- BAAKI CHEEZEIN NICHE -->
+<h1>HUTTU PRO</h1>
+<button onclick="alert('Wallet Connected')">CONNECT WALLET</button>
+
 </body>
 </html>
