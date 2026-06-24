@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>HUTTU PRO</title>
+    <meta charset="UTF-8">
+    <title>HUTTU PRO - Secure Dashboard</title>
     <style>
         body { background: #000; color: #fff; text-align: center; margin: 0; padding: 20px; font-family: sans-serif; }
-        .chart-box { height: 300px; width: 100%; margin-bottom: 20px; }
-        .login-panel { background: #181a20; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-        input { width: 80%; padding: 10px; margin: 5px; border-radius: 5px; border: none; }
-        button { padding: 10px 20px; cursor: pointer; background: #f0b90b; border: none; font-weight: bold; border-radius: 5px; }
+        .chart-box { height: 300px; width: 100%; margin-bottom: 20px; border: 1px solid #333; }
+        .panel { background: #181a20; padding: 20px; border-radius: 10px; margin-bottom: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        button { padding: 12px 25px; cursor: pointer; background: #f0b90b; border: none; font-weight: bold; border-radius: 5px; color: black; }
     </style>
 </head>
 <body>
@@ -18,14 +18,23 @@
         <iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark&style=1&interval=1" style="width:100%; height:100%; border:none;"></iframe>
     </div>
 
-    <div class="login-panel">
-        <h3>Bot Login</h3>
-        <input type="text" id="apiKey" placeholder="Enter API Key">
-        <input type="password" id="apiSecret" placeholder="Enter API Secret">
-        <br><br>
-        <button onclick="startBot()">LOGIN & START BOT</button>
+    <div class="panel">
+        <h3>Secure Web3 Access</h3>
+        <p>सुरक्षा के लिए कीज़ का उपयोग बंद कर दिया गया है। अपना वॉलेट कनेक्ट करें:</p>
+        <button id="walletBtn" onclick="connectWallet()">CONNECT WALLET (MetaMask)</button>
     </div>
 
-    <script src="bot.js"></script>
+    <!-- यहाँ हमने सुरक्षित app.js फाइल को लिंक किया है -->
+    <script src="app.js"></script>
+    <script>
+        async function connectWallet() {
+            if (window.ethereum) {
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                document.getElementById('walletBtn').innerText = "Connected: " + accounts[0].substring(0,6) + "...";
+            } else {
+                alert("कृपया MetaMask एक्सटेंशन इंस्टॉल करें!");
+            }
+        }
+    </script>
 </body>
 </html>
