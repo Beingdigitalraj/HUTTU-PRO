@@ -3,58 +3,20 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract HuttuProMLM is ReentrancyGuard {
-    address public owner;
-    uint256[7] public levelPercentages = [1000, 500, 300, 200, 100, 50, 50]; 
+contract HuttuPro is ReentrancyGuard {
+    // यूजर का डेटा
+    mapping(address => uint256) public balances;
 
-    struct User {
-        bool isRegistered;
-        address referrer;
-        uint256 totalStaked;
-        uint256 pendingEarnings; // कमीशन के लिए
-        uint256 totalWithdrawn;
-    }
-
-    mapping(address => User) public users;
-
-    constructor() {
-        owner = msg.sender;
-        users[msg.sender].isRegistered = true;
-    }
-
-    // इन्वेस्ट करने का तरीका
-    function invest(address _referrer) external payable nonReentrant {
+    // पैसे जमा करने का सुरक्षित तरीका
+    function deposit() external payable {
         require(msg.value > 0, "Amount must be > 0");
-        
-        if (!users[msg.sender].isRegistered) {
-            require(users[_referrer].isRegistered, "Invalid referrer");
-            users[msg.sender].isRegistered = true;
-            users[msg.sender].referrer = _referrer;
-        }
-
-        address currentReferrer = users[msg.sender].referrer;
-        for (uint256 i = 0; i < 7; i++) {
-            uint256 commission = (msg.value * levelPercentages[i]) / 10000;
-            
-            if (currentReferrer != address(0)) {
-                users[currentReferrer].pendingEarnings += commission;
-                currentReferrer = users[currentReferrer].referrer;
-            } else {
-                users[owner].pendingEarnings += commission; // बची हुई कमीशन ओनर को
-                break; 
-            }
-        }
+        balances[msg.sender] += msg.value;
     }
 
-    // सुरक्षित विड्रॉल फंक्शन
-    function withdrawEarnings() external nonReentrant {
-        uint256 amount = users[msg.sender].pendingEarnings;
-        require(amount > 0, "No earnings");
-
-        users[msg.sender].pendingEarnings = 0;
-        users[msg.sender].totalWithdrawn += amount;
-
-        (bool sent, ) = payable(msg.sender).call{value: amount}("");
-        require(sent, "Withdrawal failed");
+    // यूजर अपना पैसा खुद क्लेम करेगा (Push-Pull Pattern)
+    function withdraw(uint256 _amount) external nonReentrant {
+        require(balances[msg.sender] >= _amount, "Insufficient balance");
+        balances[msg.sender] -= _amount;
+        payable(msg.sender).transfer(_amount);
     }
 }
