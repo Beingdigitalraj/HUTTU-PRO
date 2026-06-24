@@ -4,7 +4,9 @@ const helmet = require('helmet'); // सुरक्षा के लिए अ�
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+
+// Google Cloud Run पोर्ट को डायनामिक तरीके से लेता है, इसलिए यहाँ बदलाव किया गया है
+const PORT = process.env.PORT || 8080;
 
 // सुरक्षा के लिए Helmet का उपयोग करें
 app.use(helmet()); 
@@ -19,7 +21,12 @@ app.post('/api/v1/status', (req, res) => {
     });
 });
 
-// एरर हैंडलिंग (सुरक्षा के लिए अच्छा है)
+// बेसिक स्वास्थ्य जांच (Health Check) रूट - Cloud Run को इसकी जरूरत होती है
+app.get('/', (req, res) => {
+    res.send("HUTTU PRO Engine is online!");
+});
+
+// एरर हैंडलिंग
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ success: false, message: "Something went wrong!" });
