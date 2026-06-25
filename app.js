@@ -1,34 +1,40 @@
-// 🛡️ HUTTU PRO - Secure Backend Integration (Updated)
+// 🛡️ HUTTU PRO - Secure Backend & Multi-Signal Integration
 let userWalletAddress = null;
 let isAcceptedMember = false;
 
-// 1. Safe Wallet Connection
+// 1. Safe Wallet Connection (Existing)
 async function connectWallet() {
     if (window.ethereum) {
         try {
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             userWalletAddress = accounts[0];
-            
             const shortAddress = userWalletAddress.substring(0, 6) + "..." + userWalletAddress.substring(userWalletAddress.length - 4);
             document.getElementById('walletBtn').innerText = "Secured: " + shortAddress;
             document.getElementById('walletBtn').style.backgroundColor = "#2ebd85";
             
-            // रेफरल लिंक सेटअप
             if(document.getElementById('referralLinkInput')) {
                 document.getElementById('referralLinkInput').value = `https://beingdigitalraj.github.io/HUTTU-PRO/?ref=${userWalletAddress}`;
             }
-            
             unlockChatArea();
-            console.log("Wallet Connected:", userWalletAddress);
         } catch (error) {
             alert("Security Log: Connection request aborted.");
         }
     } else {
-        alert("Security Alert: Use Kiwi Browser/Mises Browser with MetaMask extension installed.");
+        alert("Security Alert: Use MetaMask.");
     }
 }
 
-// 2. Safe Helper Functions (No API Keys Used)
+// 2. NEW: 3-Panel Signal Integration (यह फंक्शन तीनों पैनल के डेटा को एक साथ दिखाएगा)
+function updateSignalBoard(signalData) {
+    // मान लीजिए signalData में {panel1, panel2, panel3} हैं
+    document.getElementById('signalDisplay1').innerText = signalData.panel1;
+    document.getElementById('signalDisplay2').innerText = signalData.panel2;
+    document.getElementById('signalDisplay3').innerText = signalData.panel3;
+    
+    console.log("Signals Updated for all panels");
+}
+
+// 3. Helper Functions (Existing)
 function copyReferralLink() {
     const copyText = document.getElementById("referralLinkInput");
     copyText.select();
