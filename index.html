@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title>HUTTU PRO - Secure Dashboard</title>
     <style>
-        body { background: #000; color: #fff; text-align: center; margin: 0; padding: 20px; font-family: sans-serif; }
-        .chart-box { height: 300px; width: 100%; margin-bottom: 20px; border: 1px solid #333; }
-        .panel { background: #181a20; padding: 20px; border-radius: 10px; margin-bottom: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        body { background: #000; color: #fff; text-align: center; font-family: sans-serif; padding: 20px; }
+        .panel-container { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
+        .signal-panel { background: #181a20; padding: 15px; border-radius: 10px; width: 30%; border: 1px solid #333; }
+        .chart-box { height: 300px; width: 100%; border: 1px solid #333; margin-bottom: 20px; }
         button { padding: 12px 25px; cursor: pointer; background: #f0b90b; border: none; font-weight: bold; border-radius: 5px; color: black; }
     </style>
 </head>
@@ -14,41 +15,24 @@
 
     <h1>HUTTU PRO</h1>
 
+    <!-- 1. चार्ट बॉक्स -->
     <div class="chart-box">
-        <iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark&style=1&interval=1" style="width:100%; height:100%; border:none;"></iframe>
+        <iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark&style=1" style="width:100%; height:100%; border:none;"></iframe>
     </div>
 
-    <div class="panel">
-        <h3>Secure Web3 Access</h3>
-        <p>सुरक्षा के लिए कीज़ का उपयोग बंद कर दिया गया है। अपना वॉलेट कनेक्ट करें:</p>
-        <button id="walletBtn" onclick="connectWallet()">CONNECT WALLET (MetaMask)</button>
+    <!-- 2. तीन सिग्नल पैनल -->
+    <div class="panel-container">
+        <div class="signal-panel"><h4>Signal 1</h4><div id="signalDisplay1">Waiting...</div></div>
+        <div class="signal-panel"><h4>Signal 2</h4><div id="signalDisplay2">Waiting...</div></div>
+        <div class="signal-panel"><h4>Signal 3</h4><div id="signalDisplay3">Waiting...</div></div>
     </div>
 
-    <!-- यहाँ हमने सुरक्षित app.js फाइल को लिंक किया है -->
+    <!-- 3. वॉलेट सेक्शन -->
+    <div style="background: #181a20; padding: 20px; border-radius: 10px;">
+        <button id="walletBtn" onclick="connectWallet()">CONNECT WALLET</button>
+    </div>
+
+    <!-- 4. स्क्रिप्ट लिंक -->
     <script src="app.js"></script>
-<<<<<<< Updated upstream
-    <script>
-        async function connectWallet() {
-            if (window.ethereum) {
-                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                document.getElementById('walletBtn').innerText = "Connected: " + accounts[0].substring(0,6) + "...";
-            } else {
-                alert("कृपया MetaMask एक्सटेंशन इंस्टॉल करें!");
-            }
-        }
-    </script>
-=======
-<div style="width: 100%; height: 500px; margin-top: 20px;"><iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark" style="width: 100%; height: 100%; border: none;"></iframe></div>
-<div style="width:100%;height:500px;margin-top:20px;"><iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark" style="width:100%;height:100%;border:none;"></iframe></div>
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head><title>HUTTU PRO</title></head>
-<body style="background:#000; color:#fff; text-align:center;">
-<h1>HUTTU PRO</h1>
-<div style="height:500px;"><iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE%3ABTCUSDT&theme=dark&style=1&interval=1" style="width:100%; height:100%; border:none;"></iframe></div>
-<button onclick="alert('Wallet Connected')">CONNECT WALLET</button>
->>>>>>> Stashed changes
 </body>
 </html>
