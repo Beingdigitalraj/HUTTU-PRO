@@ -11,7 +11,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-// Global variable to store latest signals
+// Global variable to store latest signals from Telegram Bot
 let latestSignals = { p1: "WAIT", p2: "WAIT", p3: "WAIT" };
 
 // 1. Basic Health Check
@@ -19,7 +19,19 @@ app.get('/', (req, res) => {
     res.status(200).json({ message: "HUTTU PRO Engine is online and running smoothly!" });
 });
 
-// 2. Deposit Endpoint
+// 2. Signal Update Endpoint (Telegram Bot isse call karega)
+app.post('/api/v1/update-signals', (req, res) => {
+    latestSignals = req.body; 
+    console.log("Signals updated:", latestSignals);
+    res.status(200).json({ status: "success", message: "Signals updated" });
+});
+
+// 3. Get Signals Endpoint (Web Dashboard isse data lega)
+app.get('/api/v1/get-signals', (req, res) => {
+    res.status(200).json(latestSignals);
+});
+
+// 4. Deposit Endpoint
 app.post('/api/v1/deposit', async (req, res) => {
     try {
         const { userId, amount, currency } = req.body;
@@ -30,7 +42,7 @@ app.post('/api/v1/deposit', async (req, res) => {
     }
 });
 
-// 3. Withdraw Endpoint
+// 5. Withdraw Endpoint
 app.post('/api/v1/withdraw', async (req, res) => {
     try {
         const { userId, amount } = req.body;
@@ -40,7 +52,7 @@ app.post('/api/v1/withdraw', async (req, res) => {
     }
 });
 
-// 4. Futures Trading Engine
+// 6. Futures Trading Engine
 app.post('/api/v1/trade/futures', async (req, res) => {
     try {
         const { symbol, side, amount, leverage } = req.body;
@@ -48,18 +60,6 @@ app.post('/api/v1/trade/futures', async (req, res) => {
     } catch (error) {
         res.status(500).json({ status: "error", message: error.message });
     }
-});
-
-// 5. Telegram Bot से सिग्नल लेने के लिए (POST)
-app.post('/api/v1/update-signals', (req, res) => {
-    latestSignals = req.body; 
-    console.log("Signals updated:", latestSignals);
-    res.status(200).json({ status: "success", message: "Signals updated" });
-});
-
-// 6. वेब डैशबोर्ड को सिग्नल भेजने के लिए (GET)
-app.get('/api/v1/get-signals', (req, res) => {
-    res.status(200).json(latestSignals);
 });
 
 // Server Initialization
